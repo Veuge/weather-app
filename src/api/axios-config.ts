@@ -6,7 +6,15 @@ interface IRequestError {
 }
 
 const axiosInstance = axios.create({
-  baseURL: "https://samples.openweathermap.org/data/2.5"
+  baseURL: "https://api.openweathermap.org/data/2.5"
+});
+
+axiosInstance.interceptors.request.use(config => {
+  config.params = {
+    appid: "06dee298355f1f7d3729482e959f8b95",
+    ...config.params
+  };
+  return config;
 });
 
 axiosInstance.interceptors.response.use(res => res, (error): Promise<IRequestError> => {

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import {
   Text,
   View,
@@ -7,13 +8,19 @@ import {
   TextStyle
 } from "react-native";
 
+import { getForecastThunk } from "./store/actions/forecastActions";
+
 interface IMainAppStyles {
   safeArea: ViewStyle;
   mainContainer: ViewStyle;
   text: TextStyle;
 }
 
-const MainApp = () => {
+const MainApp = props => {
+  useEffect(() => {
+    props.doGetForecast("london");
+  }, [])
+
   return (
     <View style={Styles.mainContainer}>
       <Text style={Styles.text}>Welcome to Weather App!</Text>
@@ -35,4 +42,8 @@ const Styles = StyleSheet.create<IMainAppStyles>({
   }
 });
 
-export default MainApp;
+const mapDispatchToProps = dispatch => ({
+  doGetForecast: query => dispatch(getForecastThunk(query))
+})
+
+export default connect(null, mapDispatchToProps)(MainApp);

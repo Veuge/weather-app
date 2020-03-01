@@ -20,10 +20,11 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
     "@types/react": "~16.9.0",
     "@types/react-native": "~0.60.23",
-    "@babel/core": "^7.0.0",
     "babel-preset-expo": "~8.0.0",
+    "reactotron-react-native": "^4.0.3",
     "typescript": "~3.6.3"
   },
   "private": true
