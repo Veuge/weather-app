@@ -34,11 +34,9 @@ interface IForecastResponse {
 }
 
 // TODO formalize response type.
-const getForecastWs = (query: String): Promise<IForecastResponse> => axios.request({
+const getForecastWs = (params: any): Promise<IForecastResponse> => axios.request({
   url: PATH,
-  params: {
-    q: query
-  },
+  params,
   transformResponse: [(stringData): IForecastResponse => {
     const data = JSON.parse(stringData);
     return {

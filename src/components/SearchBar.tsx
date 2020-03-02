@@ -23,7 +23,7 @@ const SearchBar = ({ searchTerm, onSearchTermChange, onSearch }) => {
         <TouchableOpacity onPress={onSearch} style={Styles.searchButton}>
           <FontAwesome 
             name="search"
-            size={30}
+            size={15}
             color="black"
           />
         </TouchableOpacity>

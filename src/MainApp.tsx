@@ -37,12 +37,15 @@ class MainApp extends Component<IProps, IState> {
   }
 
   componentDidUpdate(prevProps) {
-    const { favCities, doGetForecast } = this.props;
+    const { favCities, unit, doGetForecast } = this.props;
     if (favCities.length) {
       this.setState(
         { showSearchBar: false },
         () => {
-          doGetForecast(favCities[0].id);
+          doGetForecast({
+            id: favCities[0].id,
+            units: unit
+          });
         }
       );
     }
@@ -56,8 +59,11 @@ class MainApp extends Component<IProps, IState> {
 
   onSearch = () => {
     const { searchTerm } = this.state;
-    const { doGetForecast } = this.props;
-    doGetForecast(searchTerm);
+    const { doGetForecast, unit } = this.props;
+    doGetForecast({
+      q: searchTerm,
+      units: unit
+    });
   }
 
   render() {
@@ -109,7 +115,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
   doRetrieveUserPrefs: () => dispatch(getUserPreferencesThunk()),
-  doGetForecast: (data) => dispatch(getForecastThunk(data))
+  doGetForecast: (params) => dispatch(getForecastThunk(params))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainApp);

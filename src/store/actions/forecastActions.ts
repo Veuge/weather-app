@@ -19,10 +19,10 @@ const getForecastFailureAction = (error: IRequestError): IGetForecastActions => 
 });
 
 // THUNKS!
-export const getForecastThunk = (query: String) => {
+export const getForecastThunk = (params: any) => {
   return dispatch => {
     dispatch(getForecastStartAction());
-    getForecastWs(query)
+    getForecastWs(params)
       .then(({ data }) => {
         dispatch(getForecastSuccessAction(data.forecast));
       })
