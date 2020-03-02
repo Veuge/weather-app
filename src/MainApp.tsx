@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import _ from "lodash";
 import {
   View,
   StyleSheet,
@@ -8,6 +9,7 @@ import {
 import Constants from "expo-constants";
 
 import SearchBar from "./components/SearchBar";
+import { IForecastResponse } from "./api/getForecast";
 import { getUserPreferencesThunk } from "./store/actions/userPreferencesActions";
 import { getForecastThunk } from "./store/actions/forecastActions";
 import WeatherScreen from "./containers/WeatherScreen";
@@ -15,13 +17,15 @@ import LoadingComponent from "./components/LoadingComponent";
 
 interface IState {
   showSearchBar: boolean;
+  showWeather: boolean;
   searchTerm: string;
 }
 
 interface IProps {
   userPrefsLoading: boolean;
-  favCities: any[],
+  favCities: any[];
   unit: string;
+  currentForecast: IForecastResponse;
   doRetrieveUserPrefs: () => void;
   doGetForecast: (string) => void;
 }
@@ -29,6 +33,7 @@ interface IProps {
 class MainApp extends Component<IProps, IState> {
   state = {
     showSearchBar: true,
+    showWeather: false,
     searchTerm: ""
   }
 
@@ -37,7 +42,7 @@ class MainApp extends Component<IProps, IState> {
   }
 
   componentDidUpdate(prevProps) {
-    const { favCities, unit, doGetForecast } = this.props;
+    const { favCities, unit, doGetForecast, currentForecast } = this.props;
     if (favCities.length) {
       this.setState(
         { showSearchBar: false },
@@ -48,6 +53,10 @@ class MainApp extends Component<IProps, IState> {
           });
         }
       );
+    }
+
+    if (currentForecast && !_.isEqual(prevProps.currentForecast, currentForecast)) {
+      this.setState({ showWeather: true });
     }
   }
 
@@ -67,8 +76,8 @@ class MainApp extends Component<IProps, IState> {
   }
 
   render() {
-    const { showSearchBar, searchTerm } = this.state;
-    const { userPrefsLoading } = this.props;
+    const { showSearchBar, showWeather, searchTerm } = this.state;
+    const { userPrefsLoading, currentForecast, unit } = this.props;
     return (
       <>
         <View style={Styles.statusBar} />
@@ -77,11 +86,20 @@ class MainApp extends Component<IProps, IState> {
             <LoadingComponent
               loadingMessage="Loading user preferences..."
             />
-          ) : showSearchBar && (
+          ) : (showSearchBar && !showWeather) && (
             <SearchBar
               onSearch={this.onSearch}
               searchTerm={searchTerm}
               onSearchTermChange={this.onSearchTermChange}
+            />
+          )}
+          {showWeather && (
+            <WeatherScreen
+              city=""
+              currentTemp={currentForecast[0].main.temp}
+              description={currentForecast[0].weather.description}
+              units={unit}
+              weatherIcon="weather-sunny"
             />
           )}
         </View>
@@ -110,7 +128,8 @@ const Styles = StyleSheet.create<IMainAppStyles>({
 const mapStateToProps = (state) => ({
   userPrefsLoading: state.userPrefs.loading,
   favCities: state.userPrefs.favCities,
-  unit: state.userPrefs.unit
+  unit: state.userPrefs.unit,
+  currentForecast: state.retrievedForecast.forecast
 });
 
 const mapDispatchToProps = dispatch => ({

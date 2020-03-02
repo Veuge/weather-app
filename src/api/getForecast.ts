@@ -79,5 +79,6 @@ const getForecastWs = (params: any):Promise<IForecastResponse|IForecastErrorResp
 
 export {
   getForecastWs,
-  IForecast
+  IForecast,
+  IForecastResponse
 };

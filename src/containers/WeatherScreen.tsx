@@ -24,7 +24,7 @@ class WeatherScreen extends Component<IProps> {
           />
           <View>
             <Text style={[Styles.textStyle, Styles.tempText]}>
-              {currentTemp} °{units}
+              {currentTemp} °{units === "metric" ? "C" : "F"}
             </Text>
             <Text style={[Styles.textStyle, Styles.descriptionText]}>
               {description}
