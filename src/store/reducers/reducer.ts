@@ -1,17 +1,6 @@
 import { combineReducers } from "redux";
-
-const initialState = {
-  favorites: []
-};
-
-const reducer = (state = initialState, action) => {
-  switch(action.type) {
-    default: {
-      return state;
-    }
-  }
-}
+import userPreferencesReducer from "./userPreferencesReducer";
 
 export default combineReducers({
-  init: reducer
+  userPrefs: userPreferencesReducer
 });

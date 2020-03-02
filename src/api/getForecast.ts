@@ -3,27 +3,27 @@ import axios from "./axios-config";
 const PATH = "forecast";
 
 interface IMain {
-  temp: Number;
-  min: Number;
-  max: Number;
-  humidity: Number;
-  pressure: Number;
+  temp: number;
+  min: number;
+  max: number;
+  humidity: number;
+  pressure: number;
 }
 
 interface IWeather {
-  id: Number,
-  main: String,
-  description: String
+  id: number,
+  main: string,
+  description: string
 }
 
 interface ICity {
-  id: Number;
-  name: String;
-  country: String;
+  id: number;
+  name: string;
+  country: string;
 }
 
 interface IForecast {
-  timestamp: Number;
+  timestamp: number;
   main: IMain;
   weather: IWeather
 }
@@ -67,5 +67,6 @@ const getForecastWs = (query: String): Promise<IForecastResponse> => axios.reque
 });
 
 export {
-  getForecastWs
+  getForecastWs,
+  IForecast
 };

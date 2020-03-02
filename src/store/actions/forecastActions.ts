@@ -1,4 +1,4 @@
-import axios, { IRequestError } from "../../api/axios-config";
+import { IRequestError } from "../../api/axios-config";
 import { IGetForecastActions } from "./actionTypes";
 import * as actionTypes from "./actionTypes";
 import { getForecastWs } from "../../api/getForecast";
@@ -23,9 +23,8 @@ export const getForecastThunk = (query: String) => {
   return dispatch => {
     dispatch(getForecastStartAction());
     getForecastWs(query)
-      .then(r => {
-        debugger;
-        dispatch(getForecastSuccessAction(r));
+      .then(({ data }) => {
+        dispatch(getForecastSuccessAction(data.forecast));
       })
       .catch(e => {
         dispatch(getForecastFailureAction(e));
