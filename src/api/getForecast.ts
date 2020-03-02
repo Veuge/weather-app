@@ -29,17 +29,30 @@ interface IForecast {
 }
 
 interface IForecastResponse {
+  cod: number;
   forecast: IForecast[];
   city: ICity;
 }
 
+interface IForecastErrorResponse {
+  cod: number;
+  message: string
+}
+
 // TODO formalize response type.
-const getForecastWs = (params: any): Promise<IForecastResponse> => axios.request({
+const getForecastWs = (params: any):Promise<IForecastResponse|IForecastErrorResponse> => axios.request({
   url: PATH,
   params,
   transformResponse: [(stringData): IForecastResponse => {
     const data = JSON.parse(stringData);
+    if(data.cod === "404") {
+      return {
+        cod: data.cod,
+        message: data.message
+      }
+    }
     return {
+      cod: data.cod,
       city: {
         id: data.city.id || 0,
         name: data.city.name,
